@@ -106,7 +106,40 @@ import { xxx } from 'ilx1-x-tool'
 - `isImageValid(src: string | File): Promise<boolean>` - 判断图片是否有效
   - `src`: 图片 URL 或 File 对象
 
+### 调试工具 (debug.ts)
 
+#### 日志输出函数
+- `log(...args: any[]): void` - 封装 console.log 方法（可开关控制）
+  - `args`: 日志打印参数（任意数量、任意类型）
+  
+- `info(...args: any[]): void` - 封装 console.info 方法（可开关控制）
+  - `args`: 日志打印参数（任意数量、任意类型）
+  
+- `warn(...args: any[]): void` - 封装 console.warn 方法（可开关控制）
+  - `args`: 日志打印参数（任意数量、任意类型）
+  
+- `error(...args: any[]): void` - 封装 console.error 方法（可开关控制，默认生产环境保留）
+  - `args`: 日志打印参数（任意数量、任意类型）
+  
+- `debug(...args: any[]): void` - 封装 console.debug 方法（可开关控制）
+  - `args`: 日志打印参数（任意数量、任意类型）
+
+#### 配置控制函数
+- `setLoggerConfig(config: Partial<LoggerConfig>): void` - 动态修改日志工具配置
+  - `config`: 要修改的配置项（可选，无需传全部）
+  
+- `resetLoggerConfig(): void` - 重置日志工具配置为默认值
+
+- `enableAllLogs(): void` - 强制开启所有日志（临时调试用）
+
+- `disableAllLogs(): void` - 强制关闭所有日志（紧急生产环境用）
+
+#### 类型定义
+- `ConsoleType` - 日志类型枚举（'log' | 'info' | 'warn' | 'error' | 'debug'）
+- `LoggerConfig` - 日志工具配置项接口
+  - `enable`: 是否开启调试模式（true=输出日志，false=关闭日志）
+  - `reserveTypes`: 强制保留的日志类型（即使关闭调试，这些类型仍会输出）
+  - `prefix`: 日志前缀（用于区分自定义日志和原生日志）
 
 ## 开发
 
