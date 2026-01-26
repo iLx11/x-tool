@@ -16,6 +16,113 @@ import { xxx } from 'ilx1-x-tool'
 
 ## API 文档
 
+### 图像数据处理工具 (imageData.ts)
+
+#### 配置接口
+- `IConfig` - 图像数据处理配置接口
+  - `reverseValue: number` - 反转数值 (0：反转数值)
+  - `modMode: number` - 取模方式 (0：逐行，1：逐列，2：列行，3：行列)
+  - `reverseBit: number` - 反转位序 (2：反转位序)
+  - `outputMode: number` - 输出模式 (0：十六进制数组，1：字节数组)
+
+#### 图像处理主对象
+- `ImageToHexArray` - 图像处理工具函数库主对象
+
+#### 主要功能函数
+- `generate(picData: string, thresholdData: number, config: number[]): Promise<Uint8Array>` - 生成十六进制数组
+  - `picData`: base64图像数据
+  - `thresholdData`: 阈值
+  - `config`: 配置数组
+  - 返回：十六进制数组
+
+- `imageDataToHexArray(imageData: ImageData, threshold: number, config: number[]): Uint8Array` - ImageData 对象转 hexArray
+  - `imageData`: 图像数据对象
+  - `threshold`: 阈值
+  - `config`: 配置数组
+  - 返回：处理后的字节数组
+
+- `colorImageSampling(pixels: Uint8ClampedArray, width: number, height: number, config: number[]): Uint8Array` - 彩色图像取模 (RGB565格式)
+  - `pixels`: 像素数组
+  - `width`: 图像宽度
+  - `height`: 图像高度
+  - `config`: 配置数组
+  - 返回：RGB565格式的字节数组
+
+#### 取模函数
+- `ImageSamplingRow(unpackedBuffer: number[], width: number, height: number, config: number[]): Uint8Array` - 逐行式取模 (从左到右，从上到下)
+  - `unpackedBuffer`: 解压后的像素缓冲区
+  - `width`: 图像宽度
+  - `height`: 图像高度
+  - `config`: 配置数组
+  - 返回：取模后的字节数组
+
+- `ImageSamplingCol(unpackedBuffer: number[], width: number, height: number, config: number[]): Uint8Array` - 逐列式取模 (从上到下，从左到右)
+  - `unpackedBuffer`: 解压后的像素缓冲区
+  - `width`: 图像宽度
+  - `height`: 图像高度
+  - `config`: 配置数组
+  - 返回：取模后的字节数组
+
+- `ImageSamplingColRow(unpackedBuffer: number[], width: number, height: number, config: number[]): Uint8Array` - 列行式取模 (先列后行)
+  - `unpackedBuffer`: 解压后的像素缓冲区
+  - `width`: 图像宽度
+  - `height`: 图像高度
+  - `config`: 配置数组
+  - 返回：取模后的字节数组
+
+- `ImageSamplingRowCol(unpackedBuffer: number[], width: number, height: number, config: number[]): Uint8Array` - 行列式取模 (先行后列)
+  - `unpackedBuffer`: 解压后的像素缓冲区
+  - `width`: 图像宽度
+  - `height`: 图像高度
+  - `config`: 配置数组
+  - 返回：取模后的字节数组
+
+#### 图像转换函数
+- `base64ToImageData(base64Data: string): Promise<ImageData>` - base64 转 ImageData 对象
+  - `base64Data`: base64编码的图像数据
+  - 返回：ImageData对象
+
+- `resizeImageWithKonva(width: number, height: number, image: HTMLImageElement, colorMode: boolean): Promise<string>` - 使用 Konva.js 缩放图像
+  - `width`: 目标宽度
+  - `height`: 目标高度
+  - `image`: 源图像对象
+  - `colorMode`: 是否转换为灰度
+  - 返回：base64编码的缩放后图像
+
+- `resizeImageWithCanvas(width: number, height: number, image: HTMLImageElement, colorMode: boolean): Promise<string>` - 使用 Canvas API 缩放图像 (Konva不可用时的备选方案)
+  - `width`: 目标宽度
+  - `height`: 目标高度
+  - `image`: 源图像对象
+  - `colorMode`: 是否转换为灰度
+  - 返回：base64编码的缩放后图像
+
+#### 数据格式转换函数
+- `arrayToHex(array: Uint8Array): string` - Uint8Array 转十六进制字符串
+  - `array`: 字节数组
+  - 返回：十六进制字符串
+
+- `hex2hex(hex: string): Array<string>` - 十六进制数据加 '0x' 前缀
+  - `hex`: 十六进制字符串
+  - 返回：带0x前缀的十六进制数组
+
+- `generatePreview(unpackedBuffer: Uint8Array, width: number): string` - 生成取模预览 (0=白点, 1=黑点)
+  - `unpackedBuffer`: 解压后的像素缓冲区
+  - `width`: 图像宽度
+  - 返回：预览字符串
+
+#### 辅助函数
+- `createImageData(width: number, height: number, data: Uint8ClampedArray = null): ImageData` - 创建图像数据对象（兼容性函数）
+  - `width`: 图像宽度
+  - `height`: 图像高度
+  - `data`: 像素数据（可选）
+  - 返回：ImageData对象
+
+- `formatHexOutput(hexArray: Uint8Array | Array<string>, format = 0, lineBreak = 16): string` - 将字节数组格式化为可读字符串
+  - `hexArray`: 十六进制数组
+  - `format`: 输出格式 (0=带0x前缀, 1=原始数组)
+  - `lineBreak`: 每行显示的字节数
+  - 返回：格式化后的字符串
+
 ### 颜色工具 (color.ts)
 
 #### 颜色解析与转换
