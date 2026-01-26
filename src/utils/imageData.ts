@@ -1,9 +1,21 @@
 import Konva from 'konva'
 
 /********************************************************************************
+ * @brief: 图像数据处理配置接口
+ ********************************************************************************/
+export interface IConfig {
+  // 0：反转数值
+  reverseValue: number
+  // 1：取模方式 （0：逐行，1：逐列，2：列行，3：行列）
+  modMode: number
+  // 2：反转位序
+  reverseBit: number
+  // 3：输出模式（0：十六进制数组，1：字节数组）
+  outputMode: number
+}
+
+/********************************************************************************
  * @brief: 图像处理工具函数库主对象
- * @param: 无
- * @return: ImageToHexArray 对象
  ********************************************************************************/
 export const ImageToHexArray = {
   /********************************************************************************
@@ -16,14 +28,14 @@ export const ImageToHexArray = {
   generate: async function (
     picData: string,
     thresholdData: number,
-    config: number[],
+    config: number[]
   ): Promise<Uint8Array> {
     try {
       const picImageData = await this.base64ToImageData(picData)
       const bufferData = this.imageDataToHexArray(
         picImageData,
         thresholdData,
-        config,
+        config
       )
 
       return config[3] === 0
@@ -45,7 +57,7 @@ export const ImageToHexArray = {
   imageDataToHexArray: function (
     imageData: ImageData,
     threshold: number,
-    config: number[],
+    config: number[]
   ): Uint8Array {
     const pixels = imageData.data
     const height = imageData.height
@@ -109,7 +121,7 @@ export const ImageToHexArray = {
     pixels: Uint8ClampedArray,
     width: number,
     height: number,
-    config: number[],
+    config: number[]
   ): Uint8Array {
     const buffer = new Uint8Array(width * height * 2)
     let i = 0,
@@ -158,7 +170,7 @@ export const ImageToHexArray = {
     unpackedBuffer: number[],
     width: number,
     height: number,
-    config: number[],
+    config: number[]
   ): Uint8Array {
     const bytesPerRow = Math.ceil(width / 8)
     const buffer = new Uint8Array(bytesPerRow * height)
@@ -211,7 +223,7 @@ export const ImageToHexArray = {
     unpackedBuffer: number[],
     width: number,
     height: number,
-    config: number[],
+    config: number[]
   ): Uint8Array {
     const bytesPerCol = Math.ceil(height / 8)
     const buffer = new Uint8Array(bytesPerCol * width)
@@ -264,7 +276,7 @@ export const ImageToHexArray = {
     unpackedBuffer: number[],
     width: number,
     height: number,
-    config: number[],
+    config: number[]
   ): Uint8Array {
     const bytesPerCol = Math.ceil(height / 8)
     const buffer = new Uint8Array(bytesPerCol * width)
@@ -317,7 +329,7 @@ export const ImageToHexArray = {
     unpackedBuffer: number[],
     width: number,
     height: number,
-    config: number[],
+    config: number[]
   ): Uint8Array {
     const bytesPerRow = Math.ceil(width / 8)
     const buffer = new Uint8Array(bytesPerRow * height)
@@ -405,7 +417,7 @@ export const ImageToHexArray = {
     width: number,
     height: number,
     image: HTMLImageElement,
-    colorMode: boolean,
+    colorMode: boolean
   ): Promise<string> {
     if (width === 0 || height === 0) {
       throw new Error('宽度和高度不能为0')
@@ -556,7 +568,7 @@ export const ImageToHexArray = {
    ********************************************************************************/
   generatePreview: function (
     unpackedBuffer: Uint8Array,
-    width: number,
+    width: number
   ): string {
     if (!unpackedBuffer || unpackedBuffer.length === 0) {
       return ''
@@ -582,7 +594,7 @@ export const ImageToHexArray = {
   createImageData: function (
     width: number,
     height: number,
-    data: Uint8ClampedArray = null,
+    data: Uint8ClampedArray = null
   ) {
     const canvas = document.createElement('canvas')
     canvas.width = width
@@ -609,7 +621,7 @@ export const ImageToHexArray = {
   formatHexOutput: function (
     hexArray: Uint8Array | Array<string>,
     format = 0,
-    lineBreak = 16,
+    lineBreak = 16
   ): string {
     if (!hexArray || hexArray.length === 0) {
       return '无数据'
