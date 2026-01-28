@@ -1,6 +1,6 @@
 {
   "name": "ilx1-x-tool",
-  "version": "1.1.2",
+  "version": "1.2.3",
   "description": "工具库",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
